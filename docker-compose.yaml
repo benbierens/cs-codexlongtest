@@ -1,0 +1,7 @@
+services:
+  codex-node3:
+    image: thatbenbierens/nim-codex:sha-da79660
+    ports:
+      - 8080:8080
+    volumes:
+      - ./hostdatadir/codexnode:/datadir

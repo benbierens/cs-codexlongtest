@@ -42,7 +42,7 @@ namespace cs_codexlongtest
                 }
                 else
                 {
-                    Utils.Sleep(TimeSpan.FromMinutes(30));
+                    Timing.RetryDelay();
                     return UploadFile(filename, retryCounter + 1);
                 }
             }
@@ -71,7 +71,7 @@ namespace cs_codexlongtest
                 }
                 else
                 {
-                    Utils.Sleep(TimeSpan.FromSeconds(10));
+                    Timing.RetryDelay();
                     return HttpGetBytes(endpoint, retryCounter + 1);
                 }
             }
@@ -96,7 +96,7 @@ namespace cs_codexlongtest
                 }
                 else
                 {
-                    Utils.Sleep(TimeSpan.FromSeconds(10));
+                    Timing.RetryDelay();
                     return HttpGet<T>(endpoint, retryCounter + 1);
                 }
             }
@@ -105,23 +105,23 @@ namespace cs_codexlongtest
         private HttpClient GetClient()
         {
             var client = new HttpClient();
-            client.Timeout = TimeSpan.FromMinutes(3);
+            client.Timeout = Timing.HttpCallTimeout();
             return client;
         }
     }
 
     public class CodexDebugResponse
     {
-        public string id { get; set; }
-        public string[] addrs { get; set; }
-        public string repo { get; set; }
-        public string spr { get; set; }
-        public CodexDebugVersionResponse codex { get; set; }
+        public string id { get; set; } = string.Empty;
+        public string[] addrs { get; set; } = new string[0];
+        public string repo { get; set; } = string.Empty;
+        public string spr { get; set; } = string.Empty;
+        public CodexDebugVersionResponse codex { get; set; } = new();
     }
 
     public class CodexDebugVersionResponse
     {
-        public string version { get; set; }
-        public string revision { get; set; }
+        public string version { get; set; } = string.Empty;
+        public string revision { get; set; } = string.Empty;
     }
 }

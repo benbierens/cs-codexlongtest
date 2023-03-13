@@ -45,5 +45,10 @@
         {
             return File.ReadAllBytes(FilePath());
         }
+
+        public void Delete()
+        {
+            File.Delete(FilePath());
+        }
     }
 }

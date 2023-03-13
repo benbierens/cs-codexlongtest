@@ -18,12 +18,12 @@ namespace cs_codexlongtest
         public void StartCodex()
         {
             Process.Start("docker-compose", "up -d");
-            Utils.Sleep(TimeSpan.FromSeconds(30));
+            Timing.DockerImagePullDelay();
         }
 
         public void FetchDockerLogs()
         {
-            Process.Start("docker-compose", "Utils.Logs > docker_Utils.Logs.txt");
+            Process.Start("docker-compose", "logs > docker_Utils.Logs.txt");
         }
     }
 }

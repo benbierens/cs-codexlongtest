@@ -40,26 +40,32 @@
             {
                 var content = contentGenerator.Generate();
                 var expectedBytes = content.GetBytes();
-                var successfulDownloads = 0;
 
-                Utils.Sleep(TimeSpan.FromSeconds(10));
+                Timing.TestLoopDelay();
                 content.ContentId = node.UploadFile(content.FilePath());
 
-                var success = true;
-                while (success)
-                {
-                    Utils.Sleep(TimeSpan.FromSeconds(10));
-                    var receivedBytes = node.DownloadContent(content.ContentId);
+                DownloadUntilFailed(expectedBytes, content);
+                content.Delete();
+            }
+        }
 
-                    if (receivedBytes != null && Utils.AreEqual(receivedBytes, expectedBytes))
-                    {
-                        successfulDownloads++;
-                    }
-                    else
-                    {
-                        success = false;
-                        Utils.Log($"Download failed after {successfulDownloads} successful downloads.");
-                    }
+        private void DownloadUntilFailed(byte[] expectedBytes, TestContent content)
+        {
+            var successfulDownloads = 0;
+
+            while (true)
+            {
+                Timing.TestLoopDelay();
+                var receivedBytes = node.DownloadContent(content.ContentId);
+
+                if (receivedBytes != null && Utils.AreEqual(receivedBytes, expectedBytes))
+                {
+                    successfulDownloads++;
+                }
+                else
+                {
+                    Utils.Log($"Download failed after {successfulDownloads} successful downloads.");
+                    return;
                 }
             }
         }
